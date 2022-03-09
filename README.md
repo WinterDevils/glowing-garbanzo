@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Technical challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is created using a combination of React, node, and Firebase.
 
-## Available Scripts
+### Background throughts
 
-In the project directory, you can run:
+I used Firebase as the requirement was to create a HTTP GET interface along with a DB, and a combination of Cloud functions and Firestore was a decent candidate rather than setting up a local database, which is something I haven't done in a while.
 
-### `npm start`
+## Important note!
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> After cloning this repo, you will need to download my Firebase credentials and place it in:
+> /root_dir/creds/<file.json>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+I am not uploading my credentials onto a public github.. :D
 
-### `npm test`
+## Prerequisites
+This projects require you to have firebase-tools, node 16, and npm installed
+Link to install firebase-tools here: https://firebase.google.com/docs/cli#install-cli-mac-linux
+Instructions are provided with the assumption that you are running a linux/OSX environment
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## How to start Firebase local environment
+Run firebase functions locally, connected to my firestore using the credentials above
+~~~
+cd /root_dir
+firebase emulators:start
+~~~
+This will start firebase functions and firestore locally. You may access firestore locally via instructions on the CLI
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How to start pi-generator
+~~~
+cd /root_dir/pi-gen/docker
+docker-compose up 
+~~~
+> I've already configured docker to connect to firestore local emulators
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## How to run the UI
+~~~
+cd /root_dir
+npm start
+~~~
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Discussion points
+- A better way to build the UI is actually to connect React to Firestore via the SDK's snapshot method. That way there's no need to refresh the UI for new values of PI. I made it this way specifically to answer the question of serving via a HTTP request
+- I didn't bother handling decimal points when multiplying the circumference of the sun, and rounded the circumference of the sun up to the nearest KM. At the scale of 4+ million kilometers, the decimal point shouldn't make much of a difference realistically
+- Made some extra cloud animation just for fun
+- I used firebase over local mongoDB implementation as it's just easier to setup
+- There's a limitation on documentsize for firestore, so it definitely needs improvement should I want to support a really big number of decimals for Pi
+- I definitely shouldn't be writing into firestore or any DB 1 by 1 without any form of chunking in a typical scenario
+- 
