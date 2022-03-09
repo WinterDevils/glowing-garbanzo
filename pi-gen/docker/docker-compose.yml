@@ -1,0 +1,11 @@
+version: "3.6"
+
+services:
+  pi_gen:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    network_mode: host
+    volumes:
+      - ../creds/:/app/creds
+      - /app/node_modules

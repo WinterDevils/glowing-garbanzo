@@ -3,7 +3,7 @@ const firestore = require("firebase-admin/firestore")
 const Decimal = require("decimal.js")
 const moment = require("moment")
 
-const serviceAccount = require("../creds/pi-calculator-16fed-firebase-adminsdk-gjgq5-3a03c9ab47.json")
+const serviceAccount = require("./creds/hehui-firebase.json")
 admin.initializeApp({ credential: admin.cert(serviceAccount) })
 const db = firestore.getFirestore()
 
@@ -49,7 +49,7 @@ function chudnovsky(digits) {
 
   const dbPi = await piRef.get()
   // starting at 5000 to not kill my firebase bill on iops
-  let currDigit = dbPi.data()?.digits || 5000
+  let currDigit = dbPi.data()?.digits || 1
 
   do {
     var start = Date.now()
